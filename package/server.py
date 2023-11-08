@@ -9,7 +9,7 @@ import server_services_pb2
 class FileServicesImplementation(server_services_pb2_grpc.FileServicesServicer):
   def __init__(self) -> None:
     super().__init__()
-    self.metadata = {}
+    # self.metadata = {}
     self.files = {}
     self.hosts = {}
 
@@ -17,12 +17,12 @@ class FileServicesImplementation(server_services_pb2_grpc.FileServicesServicer):
     '''
     Will be called for the first time only
     '''
-    name = request.name
-    files = request.files
+    name = str(request.name)
+    files = list(request.files)
     hostname = request.connection_string
-    self.metadata[name] = {
-      files: files
-    }
+    # self.metadata[name] = {
+    #   files: files
+    # }
     for file in files:
       self.files[file] = [name] # This will hold all the clients that can serve the file, first holds the master copy
     self.hosts[name] = {
@@ -30,7 +30,7 @@ class FileServicesImplementation(server_services_pb2_grpc.FileServicesServicer):
       "hostname": hostname
     }
 
-    print(f'Host {name} has been successfully registered on {self.hosts[name].last_message}')
+    print(f'Host {name} has been successfully registered on {self.hosts[name]["last_message"]}')
 
     response = server_services_pb2.InitializeResponse()
     response.status = True
@@ -48,27 +48,30 @@ class FileServicesImplementation(server_services_pb2_grpc.FileServicesServicer):
     deleted_files = request.deleted_files
     changed_files = request.changed_files
 
-    self.metadata[name].files.extend(new_files)
+    # self.metadata[name].files.extend(new_files)
     for file in new_files:
       self.files[file] = [name]
 
-    self.metadata[name].files = list(filter(lambda x: x not in deleted_files, self.metadata[name].files))
+    # self.metadata[name].files = list(filter(lambda x: x not in deleted_files, self.metadata[name].files))
     for file in deleted_files:
       del self.files[file]
 
     for file in changed_files:
-      self.files[file] = [name] # Reset and remove all other clients for these files
+      # self.files[file] = [name] # Reset and remove all other clients for these files
+      for host in self.files[file][1:]:
+        # Make request to each host and let them know the file is stale
+        pass
 
-    self.hosts[name].last_message = time.time()
+    self.hosts[name]["last_message"] = time.time()
 
-    print(f'Host {name} has sent an update message on {self.hosts[name].last_message}')
+    print(f'Host {name} has sent an update message on {self.hosts[name]["last_message"]}')
 
     response.status = True
     return response
 
   def GetFiles(self, request, context):
     response = server_services_pb2.GetFilesResponse()
-    response.files = self.files.keys()
+    response.files.extend(self.files.keys())
     return response
 
   def GetFileNode(self, request, context):
@@ -80,7 +83,7 @@ class FileServicesImplementation(server_services_pb2_grpc.FileServicesServicer):
       return response
 
     name = random.choice(self.files[file])
-    response.hostname = self.hosts[name].hostname
+    response.hostname = self.hosts[name]['hostname']
     response.status = True
     print(f'Host has requested to download file {file}')
     return response
