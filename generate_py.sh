@@ -1,0 +1,2 @@
+python -m grpc_tools.protoc -I./protobufs --python_out=./package --grpc_python_out=./package ./protobufs/server_services.proto
+python -m grpc_tools.protoc -I./protobufs --python_out=./package --grpc_python_out=./package ./protobufs/client_services.proto
