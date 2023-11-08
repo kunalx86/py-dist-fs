@@ -1,1 +1,21 @@
 syntax = "proto3";
+
+message DownloadFileRequest {
+  string file = 1;
+}
+
+message DownloadFileResponse {
+  string content = 1;
+  bool status = 2;
+}
+
+message MarkStaleRequest {
+  string file = 1;
+}
+
+message MarkStaleResponse {}
+
+service P2PFileServices {
+  rpc DownloadFile (DownloadFileRequest) returns (DownloadFileResponse);
+  rpc MarkStale (MarkStaleRequest) returns (MarkStaleResponse);
+}

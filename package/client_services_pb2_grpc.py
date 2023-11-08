@@ -2,3 +2,98 @@
 """Client and server classes corresponding to protobuf-defined services."""
 import grpc
 
+import client_services_pb2 as client__services__pb2
+
+
+class P2PFileServicesStub(object):
+    """Missing associated documentation comment in .proto file."""
+
+    def __init__(self, channel):
+        """Constructor.
+
+        Args:
+            channel: A grpc.Channel.
+        """
+        self.DownloadFile = channel.unary_unary(
+                '/P2PFileServices/DownloadFile',
+                request_serializer=client__services__pb2.DownloadFileRequest.SerializeToString,
+                response_deserializer=client__services__pb2.DownloadFileResponse.FromString,
+                )
+        self.MarkStale = channel.unary_unary(
+                '/P2PFileServices/MarkStale',
+                request_serializer=client__services__pb2.MarkStaleRequest.SerializeToString,
+                response_deserializer=client__services__pb2.MarkStaleResponse.FromString,
+                )
+
+
+class P2PFileServicesServicer(object):
+    """Missing associated documentation comment in .proto file."""
+
+    def DownloadFile(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def MarkStale(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+
+def add_P2PFileServicesServicer_to_server(servicer, server):
+    rpc_method_handlers = {
+            'DownloadFile': grpc.unary_unary_rpc_method_handler(
+                    servicer.DownloadFile,
+                    request_deserializer=client__services__pb2.DownloadFileRequest.FromString,
+                    response_serializer=client__services__pb2.DownloadFileResponse.SerializeToString,
+            ),
+            'MarkStale': grpc.unary_unary_rpc_method_handler(
+                    servicer.MarkStale,
+                    request_deserializer=client__services__pb2.MarkStaleRequest.FromString,
+                    response_serializer=client__services__pb2.MarkStaleResponse.SerializeToString,
+            ),
+    }
+    generic_handler = grpc.method_handlers_generic_handler(
+            'P2PFileServices', rpc_method_handlers)
+    server.add_generic_rpc_handlers((generic_handler,))
+
+
+ # This class is part of an EXPERIMENTAL API.
+class P2PFileServices(object):
+    """Missing associated documentation comment in .proto file."""
+
+    @staticmethod
+    def DownloadFile(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/P2PFileServices/DownloadFile',
+            client__services__pb2.DownloadFileRequest.SerializeToString,
+            client__services__pb2.DownloadFileResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def MarkStale(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/P2PFileServices/MarkStale',
+            client__services__pb2.MarkStaleRequest.SerializeToString,
+            client__services__pb2.MarkStaleResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)

@@ -6,6 +6,9 @@ import time
 import server_services_pb2_grpc
 import server_services_pb2
 
+import client_services_pb2
+import client_services_pb2_grpc
+
 class FileServicesImplementation(server_services_pb2_grpc.FileServicesServicer):
   def __init__(self) -> None:
     super().__init__()
@@ -60,7 +63,10 @@ class FileServicesImplementation(server_services_pb2_grpc.FileServicesServicer):
       # self.files[file] = [name] # Reset and remove all other clients for these files
       for host in self.files[file][1:]:
         # Make request to each host and let them know the file is stale
-        pass
+        channel = grpc.insecure_channel(self.hosts[host]['hostname'])
+        stub = client_services_pb2_grpc.P2PFileServicesStub(channel)
+        mark_stale_request = client_services_pb2.MarkStaleRequest(file=file)
+        stub.MarkStale(mark_stale_request)
 
     self.hosts[name]["last_message"] = time.time()
 
@@ -85,11 +91,11 @@ class FileServicesImplementation(server_services_pb2_grpc.FileServicesServicer):
     name = random.choice(self.files[file])
     response.hostname = self.hosts[name]['hostname']
     response.status = True
-    print(f'Host has requested to download file {file}')
+    print(f'Host has requested to download file {file} from {name}')
     return response
 
   def AddFileNode(self, request, context):
-    response = server_services_pb2.FileNodeResponse
+    response = server_services_pb2.FileNodeResponse()
     name = request.name
     file = request.file
 

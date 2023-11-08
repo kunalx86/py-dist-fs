@@ -4,17 +4,26 @@ import hashlib
 import os
 import grpc
 import argparse
+import glob
 from collections import defaultdict
+from concurrent import futures
 
 # import the generated classes
 import server_services_pb2
 import server_services_pb2_grpc
+
+import client_services_pb2
+import client_services_pb2_grpc
 
 SERVER_PORT = 8000
 
 def read_file(path: str) -> str:
   with open(path, 'r') as f:
     return f.read()
+
+def write_file(path: str, content: str) -> None:
+  with open(path, 'w') as f:
+    f.write(content)
 
 def list_files(path: str) -> List[str]:
   path = os.path.abspath(path)
@@ -38,7 +47,7 @@ def generate_file_hashes(files: List[str], directory: str) -> Dict[str, str]:
 
   return file_hashes
 
-class Client:
+class Client(client_services_pb2_grpc.P2PFileServicesServicer):
   def __init__(self, **kwargs) -> None:
     self.channel = grpc.insecure_channel(f'localhost:{SERVER_PORT}')
     self.stub = server_services_pb2_grpc.FileServicesStub(self.channel)
@@ -49,6 +58,40 @@ class Client:
     files = list_files(self.directory)
     self.hashes = generate_file_hashes(files, self.directory)
     self.thread = threading.Thread(target=self._update)
+    self.cache = {} # file -> hostname
+
+    # Remove all files with dfs_
+    files = glob.glob(f'{self.directory}/dfs_*')
+    for file in files:
+      if os.path.isfile(file):
+        os.remove(file)
+
+  def DownloadFile(self, request, context):
+    file = request.file
+    response = client_services_pb2.DownloadFileResponse()
+    if file not in self.hashes.keys() and file not in self.cache.keys():
+      response.content = ''
+      response.status = False
+      return response
+
+    path = f'{self.directory}/{file}' if file in self.hashes.keys() else f'{self.directory}/dfs_{file}'
+    content = read_file(path)
+    response.content = content
+    response.status = True
+    return response
+
+  def MarkStale(self, request, context):
+    response = client_services_pb2.MarkStaleResponse()
+    file = request.file
+    channel = grpc.insecure_channel(self.cache[file])
+    stub = client_services_pb2_grpc.P2PFileServicesStub(channel)
+    download_file_request = client_services_pb2.DownloadFileRequest(file=file)
+    download_file_response = stub.DownloadFile(download_file_request)
+    if not download_file_response.status:
+      print('Could not download file')
+      return response
+    write_file(f'{self.directory}/dfs_{file}', download_file_response.content)
+    return response
 
   def Initialize(self) -> None:
     files = list_files(self.directory)
@@ -87,7 +130,20 @@ class Client:
     # Make call to the host and get the file
     # Write it in local fs
     # Add the file to node
-    return hostname
+    channel = grpc.insecure_channel(hostname)
+    stub = client_services_pb2_grpc.P2PFileServicesStub(channel)
+    download_file_request = client_services_pb2.DownloadFileRequest(file=file)
+    download_file_response = stub.DownloadFile(download_file_request)
+    if not download_file_response.status:
+      print('Could not download file')
+      return ''
+    write_file(f'{self.directory}/dfs_{file}', download_file_response.content)
+    self.cache[file] = hostname
+
+    add_file_node_request = server_services_pb2.FileNodeRequest(name=self.name, file=file)
+    self.stub.AddFileNode(add_file_node_request)
+
+    return download_file_response.content
 
   def start_timer(self) -> None:
     self.thread.start()
@@ -110,7 +166,7 @@ class Client:
         if old_hash != '' and old_hash != new_hash:
           changed_files.append(file)
         self.hashes[file] = new_hash
-      
+
       request = server_services_pb2.KeepAliveRequest(name=self.name, new_files=new_files, deleted_files=deleted_files, changed_files=changed_files)
       self.stub.KeepAlive(request)
       threading.Event().wait(timeout=10.0)
@@ -125,6 +181,11 @@ def main():
   client = Client(**args.__dict__)
   client.Initialize()
   client.start_timer()
+
+  server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
+  client_services_pb2_grpc.add_P2PFileServicesServicer_to_server(client, server)
+  server.add_insecure_port(f'[::]:{args.__dict__["port"]}')
+  server.start()
 
   # CLI Like interface
   while True:

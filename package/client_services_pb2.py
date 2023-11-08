@@ -13,11 +13,21 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x15\x63lient_services.protob\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x15\x63lient_services.proto\"#\n\x13\x44ownloadFileRequest\x12\x0c\n\x04\x66ile\x18\x01 \x01(\t\"7\n\x14\x44ownloadFileResponse\x12\x0f\n\x07\x63ontent\x18\x01 \x01(\t\x12\x0e\n\x06status\x18\x02 \x01(\x08\" \n\x10MarkStaleRequest\x12\x0c\n\x04\x66ile\x18\x01 \x01(\t\"\x13\n\x11MarkStaleResponse2\x82\x01\n\x0fP2PFileServices\x12;\n\x0c\x44ownloadFile\x12\x14.DownloadFileRequest\x1a\x15.DownloadFileResponse\x12\x32\n\tMarkStale\x12\x11.MarkStaleRequest\x1a\x12.MarkStaleResponseb\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
 _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'client_services_pb2', _globals)
 if _descriptor._USE_C_DESCRIPTORS == False:
   DESCRIPTOR._options = None
+  _globals['_DOWNLOADFILEREQUEST']._serialized_start=25
+  _globals['_DOWNLOADFILEREQUEST']._serialized_end=60
+  _globals['_DOWNLOADFILERESPONSE']._serialized_start=62
+  _globals['_DOWNLOADFILERESPONSE']._serialized_end=117
+  _globals['_MARKSTALEREQUEST']._serialized_start=119
+  _globals['_MARKSTALEREQUEST']._serialized_end=151
+  _globals['_MARKSTALERESPONSE']._serialized_start=153
+  _globals['_MARKSTALERESPONSE']._serialized_end=172
+  _globals['_P2PFILESERVICES']._serialized_start=175
+  _globals['_P2PFILESERVICES']._serialized_end=305
 # @@protoc_insertion_point(module_scope)
