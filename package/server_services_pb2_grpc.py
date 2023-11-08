@@ -2,3 +2,230 @@
 """Client and server classes corresponding to protobuf-defined services."""
 import grpc
 
+import server_services_pb2 as server__services__pb2
+
+
+class FileServicesStub(object):
+    """Missing associated documentation comment in .proto file."""
+
+    def __init__(self, channel):
+        """Constructor.
+
+        Args:
+            channel: A grpc.Channel.
+        """
+        self.Initialize = channel.unary_unary(
+                '/FileServices/Initialize',
+                request_serializer=server__services__pb2.InitializeRequest.SerializeToString,
+                response_deserializer=server__services__pb2.InitializeResponse.FromString,
+                )
+        self.KeepAlive = channel.unary_unary(
+                '/FileServices/KeepAlive',
+                request_serializer=server__services__pb2.KeepAliveRequest.SerializeToString,
+                response_deserializer=server__services__pb2.KeepAliveResponse.FromString,
+                )
+        self.GetFiles = channel.unary_unary(
+                '/FileServices/GetFiles',
+                request_serializer=server__services__pb2.GetFilesRequest.SerializeToString,
+                response_deserializer=server__services__pb2.GetFilesResponse.FromString,
+                )
+        self.GetFileNode = channel.unary_unary(
+                '/FileServices/GetFileNode',
+                request_serializer=server__services__pb2.GetFileNodeRequest.SerializeToString,
+                response_deserializer=server__services__pb2.GetFileNodeResponse.FromString,
+                )
+        self.AddFileNode = channel.unary_unary(
+                '/FileServices/AddFileNode',
+                request_serializer=server__services__pb2.FileNodeRequest.SerializeToString,
+                response_deserializer=server__services__pb2.FileNodeResponse.FromString,
+                )
+        self.RemoveFileNode = channel.unary_unary(
+                '/FileServices/RemoveFileNode',
+                request_serializer=server__services__pb2.FileNodeRequest.SerializeToString,
+                response_deserializer=server__services__pb2.FileNodeResponse.FromString,
+                )
+
+
+class FileServicesServicer(object):
+    """Missing associated documentation comment in .proto file."""
+
+    def Initialize(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def KeepAlive(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def GetFiles(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def GetFileNode(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def AddFileNode(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def RemoveFileNode(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+
+def add_FileServicesServicer_to_server(servicer, server):
+    rpc_method_handlers = {
+            'Initialize': grpc.unary_unary_rpc_method_handler(
+                    servicer.Initialize,
+                    request_deserializer=server__services__pb2.InitializeRequest.FromString,
+                    response_serializer=server__services__pb2.InitializeResponse.SerializeToString,
+            ),
+            'KeepAlive': grpc.unary_unary_rpc_method_handler(
+                    servicer.KeepAlive,
+                    request_deserializer=server__services__pb2.KeepAliveRequest.FromString,
+                    response_serializer=server__services__pb2.KeepAliveResponse.SerializeToString,
+            ),
+            'GetFiles': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetFiles,
+                    request_deserializer=server__services__pb2.GetFilesRequest.FromString,
+                    response_serializer=server__services__pb2.GetFilesResponse.SerializeToString,
+            ),
+            'GetFileNode': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetFileNode,
+                    request_deserializer=server__services__pb2.GetFileNodeRequest.FromString,
+                    response_serializer=server__services__pb2.GetFileNodeResponse.SerializeToString,
+            ),
+            'AddFileNode': grpc.unary_unary_rpc_method_handler(
+                    servicer.AddFileNode,
+                    request_deserializer=server__services__pb2.FileNodeRequest.FromString,
+                    response_serializer=server__services__pb2.FileNodeResponse.SerializeToString,
+            ),
+            'RemoveFileNode': grpc.unary_unary_rpc_method_handler(
+                    servicer.RemoveFileNode,
+                    request_deserializer=server__services__pb2.FileNodeRequest.FromString,
+                    response_serializer=server__services__pb2.FileNodeResponse.SerializeToString,
+            ),
+    }
+    generic_handler = grpc.method_handlers_generic_handler(
+            'FileServices', rpc_method_handlers)
+    server.add_generic_rpc_handlers((generic_handler,))
+
+
+ # This class is part of an EXPERIMENTAL API.
+class FileServices(object):
+    """Missing associated documentation comment in .proto file."""
+
+    @staticmethod
+    def Initialize(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/FileServices/Initialize',
+            server__services__pb2.InitializeRequest.SerializeToString,
+            server__services__pb2.InitializeResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def KeepAlive(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/FileServices/KeepAlive',
+            server__services__pb2.KeepAliveRequest.SerializeToString,
+            server__services__pb2.KeepAliveResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def GetFiles(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/FileServices/GetFiles',
+            server__services__pb2.GetFilesRequest.SerializeToString,
+            server__services__pb2.GetFilesResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def GetFileNode(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/FileServices/GetFileNode',
+            server__services__pb2.GetFileNodeRequest.SerializeToString,
+            server__services__pb2.GetFileNodeResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def AddFileNode(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/FileServices/AddFileNode',
+            server__services__pb2.FileNodeRequest.SerializeToString,
+            server__services__pb2.FileNodeResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def RemoveFileNode(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/FileServices/RemoveFileNode',
+            server__services__pb2.FileNodeRequest.SerializeToString,
+            server__services__pb2.FileNodeResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)

@@ -13,11 +13,33 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x15server_services.protob\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x15server_services.proto\"K\n\x11InitializeRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x19\n\x11\x63onnection_string\x18\x02 \x01(\t\x12\r\n\x05\x66iles\x18\x03 \x03(\t\"$\n\x12InitializeResponse\x12\x0e\n\x06status\x18\x01 \x01(\x08\"a\n\x10KeepAliveRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x11\n\tnew_files\x18\x02 \x03(\t\x12\x15\n\rdeleted_files\x18\x03 \x03(\t\x12\x15\n\rchanged_files\x18\x04 \x03(\t\"#\n\x11KeepAliveResponse\x12\x0e\n\x06status\x18\x01 \x01(\x08\"\x11\n\x0fGetFilesRequest\"!\n\x10GetFilesResponse\x12\r\n\x05\x66iles\x18\x01 \x03(\t\"\"\n\x12GetFileNodeRequest\x12\x0c\n\x04\x66ile\x18\x01 \x01(\t\"7\n\x13GetFileNodeResponse\x12\x10\n\x08hostname\x18\x01 \x01(\t\x12\x0e\n\x06status\x18\x02 \x01(\x08\"-\n\x0f\x46ileNodeRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x0c\n\x04\x66ile\x18\x02 \x01(\t\"\"\n\x10\x46ileNodeResponse\x12\x0e\n\x06status\x18\x01 \x01(\x08\x32\xcf\x02\n\x0c\x46ileServices\x12\x35\n\nInitialize\x12\x12.InitializeRequest\x1a\x13.InitializeResponse\x12\x32\n\tKeepAlive\x12\x11.KeepAliveRequest\x1a\x12.KeepAliveResponse\x12/\n\x08GetFiles\x12\x10.GetFilesRequest\x1a\x11.GetFilesResponse\x12\x38\n\x0bGetFileNode\x12\x13.GetFileNodeRequest\x1a\x14.GetFileNodeResponse\x12\x32\n\x0b\x41\x64\x64\x46ileNode\x12\x10.FileNodeRequest\x1a\x11.FileNodeResponse\x12\x35\n\x0eRemoveFileNode\x12\x10.FileNodeRequest\x1a\x11.FileNodeResponseb\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
 _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'server_services_pb2', _globals)
 if _descriptor._USE_C_DESCRIPTORS == False:
   DESCRIPTOR._options = None
+  _globals['_INITIALIZEREQUEST']._serialized_start=25
+  _globals['_INITIALIZEREQUEST']._serialized_end=100
+  _globals['_INITIALIZERESPONSE']._serialized_start=102
+  _globals['_INITIALIZERESPONSE']._serialized_end=138
+  _globals['_KEEPALIVEREQUEST']._serialized_start=140
+  _globals['_KEEPALIVEREQUEST']._serialized_end=237
+  _globals['_KEEPALIVERESPONSE']._serialized_start=239
+  _globals['_KEEPALIVERESPONSE']._serialized_end=274
+  _globals['_GETFILESREQUEST']._serialized_start=276
+  _globals['_GETFILESREQUEST']._serialized_end=293
+  _globals['_GETFILESRESPONSE']._serialized_start=295
+  _globals['_GETFILESRESPONSE']._serialized_end=328
+  _globals['_GETFILENODEREQUEST']._serialized_start=330
+  _globals['_GETFILENODEREQUEST']._serialized_end=364
+  _globals['_GETFILENODERESPONSE']._serialized_start=366
+  _globals['_GETFILENODERESPONSE']._serialized_end=421
+  _globals['_FILENODEREQUEST']._serialized_start=423
+  _globals['_FILENODEREQUEST']._serialized_end=468
+  _globals['_FILENODERESPONSE']._serialized_start=470
+  _globals['_FILENODERESPONSE']._serialized_end=504
+  _globals['_FILESERVICES']._serialized_start=507
+  _globals['_FILESERVICES']._serialized_end=842
 # @@protoc_insertion_point(module_scope)

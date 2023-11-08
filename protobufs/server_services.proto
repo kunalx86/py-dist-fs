@@ -1,1 +1,55 @@
 syntax = "proto3";
+
+message InitializeRequest {
+  string name = 1;
+  string connection_string = 2;
+  repeated string files = 3;
+}
+
+message InitializeResponse {
+  bool status = 1;
+}
+
+message KeepAliveRequest {
+  string name = 1;
+  repeated string new_files = 2;
+  repeated string deleted_files = 3;
+  repeated string changed_files = 4;
+}
+
+message KeepAliveResponse {
+  bool status = 1;
+}
+
+message GetFilesRequest {}
+
+message GetFilesResponse {
+  repeated string files = 1;
+}
+
+message GetFileNodeRequest {
+  string file = 1;
+}
+
+message GetFileNodeResponse {
+  string hostname = 1;
+  bool status = 2;
+}
+
+message FileNodeRequest {
+  string name = 1;
+  string file = 2;
+}
+
+message FileNodeResponse {
+  bool status = 1;
+}
+
+service FileServices {
+  rpc Initialize (InitializeRequest) returns (InitializeResponse);
+  rpc KeepAlive (KeepAliveRequest) returns (KeepAliveResponse);
+  rpc GetFiles (GetFilesRequest) returns (GetFilesResponse);
+  rpc GetFileNode (GetFileNodeRequest) returns (GetFileNodeResponse);
+  rpc AddFileNode (FileNodeRequest) returns (FileNodeResponse);
+  rpc RemoveFileNode (FileNodeRequest) returns (FileNodeResponse);
+}
